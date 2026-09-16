@@ -49,7 +49,7 @@ $I_c$ : Amplitude du signal ac
     
     $P_L$ : Puissance sur la charge
 
-    $P_{dc}$ : <...>
+    $P_{dc} = V_{CC}\cdot I_{CC} + V_{EE}\cdot I_{EE}$
 \end{itemize}
 
 Gain en dB : $20\cdot \log|A|$
@@ -163,10 +163,11 @@ Cas de superposition d'un signal de polarisation (dc) et d'un signal alternatif 
 $$v_D(t) = V_D + v_d(t)$$
 $$i_D(t) = I_D + i_d(t)$$
 
+Concrètement, pour la partie AC, on peut remplacer la diode par une résistance $r_d$
+$$r_d = \frac{1}{\left.\frac{\partial i_D}{\partial v_D}\right|_{i_D = I_D}} = \frac{(n) V_T}{I_D}$$
+
 (Fonctionne bien jusqu'à des tensions alternatives d'environ $100 \unit{m\volt}$)
 
-<Résistance petit-signal (26mv/courant de polarisation) slide 11>
-Pour le DC on fait avec l'exponentielle, pour le AC on remplace la diode par une résistance (rd)
 
 \break
 
@@ -197,11 +198,11 @@ $$R_{MOS} = f(V_{out,AO}) \qquad \text{telle que} \qquad v_{OUT} = v_{REF}$$
     \item 4. Body ou Bulk
 \end{itemize}
 
-\begin{center} \includegraphics[scale=0.4]{images/struct-mos.png} \end{center}
+\begin{center} \includegraphics[scale=0.3]{images/struct-mos.png} \end{center}
 
 \subsubsection{Technologie MOS complémentaire ou CMOS}
 
-\begin{center} \includegraphics[scale=0.4]{images/nmos-pmos.png} \end{center}
+\begin{center} \includegraphics[scale=0.3]{images/nmos-pmos.png} \end{center}
 
 Le drain et la source sont interchangable
 
@@ -215,11 +216,25 @@ Symbôles du NMOS :
 
 \subsection{Régions de fonctionnement du NMOS}
 
-<slide 6.1>
+\begin{center} \includegraphics[scale=0.4]{images/mode-nmos.png} \end{center}
+
+\begin{itemize}
+    \item $v_{GS} < V_{tn}$ : $i_D \approx 0$ (régime \textbf{coupé} ou \textbf{cut-off})
+    \item \textbf{Overdrive} $v_{OV} \triangleq v_{GS} - V_{tn} > 0$ : $i_D > 0$ (régime \textbf{passant} ou \textbf{turned-on})
+    \begin{itemize}
+        \item $v_{DS} < v_{OV}$ : $i_D (v_{DS}, v_{OV})$ (régime \textbf{triode})
+        \item $v_{DS} \geq v_{OV}$ : $i_D (v_{OV})$ (régime \textbf{saturé})
+    \end{itemize}
+\end{itemize}
+
+($V_{tn}$ est la tension seuil)
+
 
 \subsection{Équations I-V}
 
 \begin{center} \includegraphics[scale=0.45]{images/nmos-eq.png} \end{center}
+
+\textbf{Région de saturation} :
 
 $$v_{DS} \geq v_{OV} \Leftrightarrow v_{GD} \leq V_{tn}$$
 \begin{flalign*}
@@ -227,9 +242,56 @@ $$v_{DS} \geq v_{OV} \Leftrightarrow v_{GD} \leq V_{tn}$$
 &= \frac{1}{2}k_n'\frac{W}{L} v_{OV}^2
 \end{flalign*}
 
-<... jusqu'à slide 9 inclu>
-(Masse petit signal peut être 5V par exemple)
+($k_n'$, $W$ et $L$ sont des paramètres du NMOS)
 
+$k_n \text{ ou } \beta = k_n' \cdot W / L$
+
+\medskip
+
+\textbf{Région triode} :
+
+$$ v_{DS} < v_{OV} \Leftrightarrow v_{GD} > V_{tn} $$
+$$i_D = k_n' \frac{W}{L} \left[ v_{OV} - \frac{1}{2}v_{DS} \right] \cdot v_{DS} $$
+
+si $v_{DS}$ faible :
+
+$$i_D \approx k_n' \frac{W}{L} v_{OV} \cdot v_{DS}$$
+
+\medskip
+
+\textbf{En réalité} :
+
+\begin{itemize}
+    \item À $v_{DS}$ faible et $v_{GS}$ élevé, $i_D$ quasi-linéaire $\rightarrow$ résistance MOS
+    \item En saturation, $i_D$ augmente légèrement avec $v_{DS}$ (effet Early ou 'modulation de longueur de canal')
+\end{itemize}
+
+$$\rightarrow \quad i_D = \frac{1}{2} k_n' \frac{W}{L} (v_{GS} - V_t)^2 (1 + \lambda v_{DS})$$
+
+Tension d'Early : $V_A = 1/\lambda$
+
+\begin{center} \includegraphics[scale=0.25]{images/early.png} \end{center}
+
+%(Masse petit signal peut être 5V par exemple)
+
+
+\subsection{Transistor PMOS}
+
+\begin{center} \includegraphics[scale=0.45]{images/pmos.png} \end{center}
+
+\begin{center} \includegraphics[scale=0.3]{images/pmos-iv.png} \end{center}
+
+\textbf{Saturation Region} :
+
+$$v_{SD} \geq |v_{OV}| \Leftrightarrow v_{DG} \leq |V_{tp}|$$
+
+$$i_D = \frac{1}{2} k_p' \frac{W}{L}(v_{GS} - |V_{tp}|)^2 \cdot (1 + |\lambda_p|\cdot v_{SD})$$
+
+\textbf{Triode Region} :
+
+$$v_{SD} < |v_{OV}| \Leftrightarrow v_{DG} > |V_{tp}|$$
+
+$$i_D = k_p' \frac{W}{L}\left[|v_{OV} - \frac{1}{2} v_{SD}\right] \cdot v_{SD}$$
 
 
 
