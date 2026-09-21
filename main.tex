@@ -207,14 +207,12 @@ $$R_{MOS} = f(V_{out,AO}) \qquad \text{telle que} \qquad v_{OUT} = v_{REF}$$
 Le drain et la source sont interchangable
 
 
-\subsection{Caractéristiques Courant - Tensions}
-
-Symbôles du NMOS :
+\subsection{Transistor NMOS}
 
 \begin{center} \includegraphics[scale=0.35]{images/symbol-nmos.png} \end{center}
 
 
-\subsection{Régions de fonctionnement du NMOS}
+\subsubsection{Régions de fonctionnement du NMOS}
 
 \begin{center} \includegraphics[scale=0.4]{images/mode-nmos.png} \end{center}
 
@@ -230,7 +228,7 @@ Symbôles du NMOS :
 ($V_{tn}$ est la tension seuil)
 
 
-\subsection{Équations I-V}
+\subsubsection{Équations I-V}
 
 \begin{center} \includegraphics[scale=0.45]{images/nmos-eq.png} \end{center}
 
@@ -239,10 +237,10 @@ Symbôles du NMOS :
 $$v_{DS} \geq v_{OV} \Leftrightarrow v_{GD} \leq V_{tn}$$
 \begin{flalign*}
 \rightarrow i_D &= \frac{1}{2} k_n' \frac{W}{L}(v_{GS} - V_{tn})^2\\
-&= \frac{1}{2}k_n'\frac{W}{L} v_{OV}^2
+&= \boxed{\frac{1}{2}k_n'\frac{W}{L} v_{OV}^2}
 \end{flalign*}
 
-($k_n'$, $W$ et $L$ sont des paramètres du NMOS)
+($k_n' = \mu_n C_{ox}$, $W$ et $L$ sont des paramètres du NMOS)
 
 $k_n \text{ ou } \beta = k_n' \cdot W / L$
 
@@ -251,7 +249,7 @@ $k_n \text{ ou } \beta = k_n' \cdot W / L$
 \textbf{Région triode} :
 
 $$ v_{DS} < v_{OV} \Leftrightarrow v_{GD} > V_{tn} $$
-$$i_D = k_n' \frac{W}{L} \left[ v_{OV} - \frac{1}{2}v_{DS} \right] \cdot v_{DS} $$
+$$\boxed{i_D = k_n' \frac{W}{L} \left[ v_{OV} - \frac{1}{2}v_{DS} \right] \cdot v_{DS}} $$
 
 si $v_{DS}$ faible :
 
@@ -281,17 +279,116 @@ Tension d'Early : $V_A = 1/\lambda$
 
 \begin{center} \includegraphics[scale=0.3]{images/pmos-iv.png} \end{center}
 
+$$|v_{OV}|  = v_{SG} - |V_{tp}|$$
+
+\textbf{Cut-off} :
+
+$$v_{SG} < |V_{tp}|$$
+
 \textbf{Saturation Region} :
 
 $$v_{SD} \geq |v_{OV}| \Leftrightarrow v_{DG} \leq |V_{tp}|$$
 
-$$i_D = \frac{1}{2} k_p' \frac{W}{L}(v_{GS} - |V_{tp}|)^2 \cdot (1 + |\lambda_p|\cdot v_{SD})$$
+$$\boxed{i_D = \frac{1}{2} k_p' \frac{W}{L}v_{OV}^2 }\cdot (1 + |\lambda_p|\cdot v_{SD})$$
 
 \textbf{Triode Region} :
 
 $$v_{SD} < |v_{OV}| \Leftrightarrow v_{DG} > |V_{tp}|$$
 
-$$i_D = k_p' \frac{W}{L}\left[|v_{OV} - \frac{1}{2} v_{SD}\right] \cdot v_{SD}$$
+$$\boxed{i_D = k_p' \frac{W}{L}\left[|v_{OV} - \frac{1}{2} v_{SD}\right] \cdot v_{SD}}$$
+
+
+\subsection{Amplificateurs}
+
+\subsubsection{En 'grand signal'}
+
+\begin{center} \includegraphics[scale=0.45]{images/ampli1.png} \end{center}
+
+$$v_O = v_{DS} = V_{DD} - R_D\cdot i_D$$
+
+\begin{itemize}
+    \item $v_{GS} \leq V_t$ : $i_D = 0 \quad ; \quad v_O = V_{DD}$
+    \item $V_t < V_{GS} \leq V_{GS|_B}$ càd $v_O > v_{GS} - V_t$ :
+    $$v_O = V_{DD} - R_D \cdot \frac{1}{2} k_n(v_{GS} - V_t)^2 \qquad \text{(saturation, sans Early)}$$
+    $$\Rightarrow V_{GS|_B} = V_t + \frac{\sqrt{2 k_n R_D V_{DD} + 1} - 1}{k_n R_D} \qquad \text{pour} \quad v_{DS} = v_{OV}$$
+    \item $v_{GS} > V_{GS|_B}$ : Triode
+    $$v_O = V_{DD} - i_D(v_{GS},v_O)$$
+\end{itemize}
+
+\begin{center} \includegraphics[scale=0.45]{images/ampli1-graph.png} \end{center}
+
+\textbf{Diagramme de charge :}
+\begin{center} \includegraphics[scale=0.4]{images/ampli1-charge.png} \end{center}
+
+\textbf{Gain :}
+
+$$A_v(v_{GS}) \equiv \frac{dv_{DS}}{dv_{GS}}$$
+
+Maximum en saturation
+
+$$v_{DS} = V_{DD} - R_D\cdot \frac{1}{2} k_n(v_{GS} - V_t)^2$$
+$$\Rightarrow A_v = -k_n\cdot v_{OV}\cdot R_D$$
+
+\begin{center} \includegraphics[scale=0.45]{images/ampli1-gain.png} \end{center}
+
+On essaye de positionner $Q$ au milieu de la partie droite, donc une tension $V_{DS}$ d'environ $V_{DD}/2$
+
+\begin{center} \includegraphics[scale=0.4]{images/ampli1-Q.png} \end{center}
+
+On prend le $V_{GS}$ au niveau de $Q$
+
+Si on prend une résistance faible/grande, on augmente/diminue la plage dynamique d'entrée, mais le gain est petit/grand
+
+
+\subsubsection{En 'petit-signal'}
+
+$$v_{GS} = V_{GS} + v_{gs}$$
+\begin{flalign*}
+    \Rightarrow i_D &= \frac{1}{2} k_n (V_{GS} + v_{gs} - V_t)^2\\
+    &= \underbrace{\frac{1}{2}k_n (V_{GS} - V_t)^2}_{I_D \quad \text{(DC)}} + \underbrace{k_n (V_{GS} - V_t) v_{gs}}_{i_d \quad \text{(ac)}} + \underbrace{\frac{1}{2} k_n v_{gs}^2}_\text{distortion non-linéaire}
+\end{flalign*}
+On va faire en sorte que la partie non-linéaire soit très petite
+
+\medskip
+
+Pour $v_{gs} << 2\cdot V_{OV}$ :
+
+$$i_d = k_n(V_{GS} - V_t) v_{gs} = g_m \cdot v_{gs}$$
+$$g_m \equiv \frac{i_d}{v_{gs}} = k_n (V_{GS} - V_t) = k_n V_{OV}$$
+
+$g_m$ : Transconductance petit-signal
+
+$$g_m \equiv \left.\frac{\partial i_D}{\partial v_{GS}}\right|_{v_{GS} = V_{GS}}$$
+
+On peut aussi trouver que
+$$g_m = \frac{2\cdot I_D}{V_{OV}}$$
+
+\medskip
+
+\textbf{Gain petit-signal} :
+
+$$v_{ds} = -i_d\cdot R_D = -g_m \cdot v_{gs} \cdot R_D$$
+
+$$A_v \equiv \frac{v_{ds}}{v_{gs}} = -g_m \cdot R_D$$
+
+On peut passer en petit-signal à une représentation avec une matrice de quadripôle de transconductance
+
+\begin{center} \includegraphics[scale=0.45]{images/mos-quadri.png} \end{center}
+
+\textbf{Effet Early} :
+
+Il faut rajouter l'effet Early, car il n'est pas négligable en AC
+
+\begin{align*}
+g_m &\equiv \frac{\partial i_D}{\partial v_{GS}}\Bigg|_{V_{GS}, V_{DS}} \\
+g_d &\equiv \frac{\partial i_D}{\partial v_{DS}}\Bigg|_{V_{GS}, V_{DS}}
+\end{align*}
+
+$$r_O = g_d^{-1} = \left(\frac{1}{2} k_n (V_{GS} - V_t)^2 \cdot \lambda\right)^{-1} = \frac{1}{\lambda \cdot I_D} = \frac{V_A}{I_D}$$
+
+\begin{center} \includegraphics[scale=0.45]{images/ampli1-early.png} \end{center}
+
+$$A_v \equiv \frac{v_{ds}}{v_{gs}} = -g_m \cdot (R_D || r_0)$$
 
 
 
