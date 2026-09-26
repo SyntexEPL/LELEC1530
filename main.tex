@@ -168,14 +168,20 @@ $$r_d = \frac{1}{\left.\frac{\partial i_D}{\partial v_D}\right|_{i_D = I_D}} = \
 
 (Fonctionne bien jusqu'à des tensions alternatives d'environ $100 \unit{m\volt}$)
 
+\medskip
+
+En petit-signal, les sources DC sont des masses
+
 
 \break
 
 \section{Mosfet}
 
-NMOS : Flèche vers la capacité
+PMOS : Flèche vers la capacité
 
-PMOS : Flèche vers l'extérieur
+NMOS : Flèche vers l'extérieur
+
+\textbf{<Borne du transistor> commun(e)} : La <borne du transistor> est connectée à une référence commune (entre l'entrée et la sortie), par exemple la masse
 
 \begin{comment}
 \subsection{Régulateur LDO (Linear Drop Out)}
@@ -189,6 +195,7 @@ $$R_{MOS} = f(V_{out,AO}) \qquad \text{telle que} \qquad v_{OUT} = v_{REF}$$
 
 \subsection{Structure du transistor MOS}
 
+\begin{comment}
 \begin{center} \includegraphics[scale=0.5]{images/mos.png} \end{center}
 
 \begin{itemize}
@@ -205,97 +212,77 @@ $$R_{MOS} = f(V_{out,AO}) \qquad \text{telle que} \qquad v_{OUT} = v_{REF}$$
 \begin{center} \includegraphics[scale=0.3]{images/nmos-pmos.png} \end{center}
 
 Le drain et la source sont interchangable
-
+\end{comment}
 
 \subsection{Transistor NMOS}
 
 \begin{center} \includegraphics[scale=0.35]{images/symbol-nmos.png} \end{center}
 
-
-\subsubsection{Régions de fonctionnement du NMOS}
-
 \begin{center} \includegraphics[scale=0.4]{images/mode-nmos.png} \end{center}
 
+%\begin{center} \includegraphics[scale=0.45]{images/nmos-eq.png} \end{center}
+
+$$\boxed{v_{OV}  = v_{GS} - V_{tn}}$$
+
 \begin{itemize}
-    \item $v_{GS} < V_{tn}$ : $i_D \approx 0$ (régime \textbf{coupé} ou \textbf{cut-off})
-    \item \textbf{Overdrive} $v_{OV} \triangleq v_{GS} - V_{tn} > 0$ : $i_D > 0$ (régime \textbf{passant} ou \textbf{turned-on})
+    \item \textbf{Cut-off} (coupé) : $ \quad v_{GS} < V_{tn}$
+    \item \textbf{Overdrive} (passant) : $ \quad v_{GS} \geq V_{tn}$
+    
     \begin{itemize}
-        \item $v_{DS} < v_{OV}$ : $i_D (v_{DS}, v_{OV})$ (régime \textbf{triode})
-        \item $v_{DS} \geq v_{OV}$ : $i_D (v_{OV})$ (régime \textbf{saturé})
+        \item \textbf{Saturation} : $ \quad v_{DS} \geq v_{OV} \Leftrightarrow v_{GD} \leq V_{tn}$
+        
+        $$\boxed{i_D = \frac{1}{2} k_n' \frac{W}{L}v_{OV}^2 }\cdot \underbrace{(1 + \lambda_n\cdot v_{DS})}_\text{Effet d'Early}$$
+
+        \item \textbf{Triode} : $ \quad v_{DS} < v_{OV} \Leftrightarrow v_{GD} > V_{tn}$
+        
+        $$\boxed{i_D = k_n' \frac{W}{L}\left[v_{OV} - \frac{1}{2} v_{DS}\right] \cdot v_{DS}}$$
     \end{itemize}
 \end{itemize}
-
-($V_{tn}$ est la tension seuil)
-
-
-\subsubsection{Équations I-V}
-
-\begin{center} \includegraphics[scale=0.45]{images/nmos-eq.png} \end{center}
-
-\textbf{Région de saturation} :
-
-$$v_{DS} \geq v_{OV} \Leftrightarrow v_{GD} \leq V_{tn}$$
-\begin{flalign*}
-\rightarrow i_D &= \frac{1}{2} k_n' \frac{W}{L}(v_{GS} - V_{tn})^2\\
-&= \boxed{\frac{1}{2}k_n'\frac{W}{L} v_{OV}^2}
-\end{flalign*}
 
 ($k_n' = \mu_n C_{ox}$, $W$ et $L$ sont des paramètres du NMOS)
 
 $k_n \text{ ou } \beta = k_n' \cdot W / L$
 
-\medskip
-
-\textbf{Région triode} :
-
-$$ v_{DS} < v_{OV} \Leftrightarrow v_{GD} > V_{tn} $$
-$$\boxed{i_D = k_n' \frac{W}{L} \left[ v_{OV} - \frac{1}{2}v_{DS} \right] \cdot v_{DS}} $$
-
-si $v_{DS}$ faible :
-
-$$i_D \approx k_n' \frac{W}{L} v_{OV} \cdot v_{DS}$$
-
-\medskip
-
-\textbf{En réalité} :
-
-\begin{itemize}
-    \item À $v_{DS}$ faible et $v_{GS}$ élevé, $i_D$ quasi-linéaire $\rightarrow$ résistance MOS
-    \item En saturation, $i_D$ augmente légèrement avec $v_{DS}$ (effet Early ou 'modulation de longueur de canal')
-\end{itemize}
-
-$$\rightarrow \quad i_D = \frac{1}{2} k_n' \frac{W}{L} (v_{GS} - V_t)^2 (1 + \lambda v_{DS})$$
-
-Tension d'Early : $V_A = 1/\lambda$
-
-\begin{center} \includegraphics[scale=0.25]{images/early.png} \end{center}
-
-%(Masse petit signal peut être 5V par exemple)
+À $v_{DS}$ faible et $v_{GS}$ élevé, $i_D$ quasi-linéaire $\rightarrow$ résistance MOS
 
 
 \subsection{Transistor PMOS}
 
 \begin{center} \includegraphics[scale=0.45]{images/pmos.png} \end{center}
 
-\begin{center} \includegraphics[scale=0.3]{images/pmos-iv.png} \end{center}
+%\begin{center} \includegraphics[scale=0.3]{images/pmos-iv.png} \end{center}
 
-$$|v_{OV}|  = v_{SG} - |V_{tp}|$$
+$$\boxed{|v_{OV}|  = v_{SG} - |V_{tp}|}$$
 
-\textbf{Cut-off} :
+\begin{itemize}
+    \item \textbf{Cut-off} (coupé) : $ \quad v_{SG} < |V_{tp}|$
+    \item \textbf{Overdrive} (passant) : $ \quad v_{SG} \geq |V_{tp}|$
+    
+    \begin{itemize}
+        \item \textbf{Saturation} : $ \quad v_{SD} \geq |v_{OV}| \Leftrightarrow v_{DG} \leq |V_{tp}|$
+        
+        $$\boxed{i_D = \frac{1}{2} k_p' \frac{W}{L}v_{OV}^2 }\cdot \underbrace{(1 + |\lambda_p|\cdot v_{SD})}_\text{Effet d'Early}$$
 
-$$v_{SG} < |V_{tp}|$$
+        \item \textbf{Triode} : $ \quad v_{SD} < |v_{OV}| \Leftrightarrow v_{DG} > |V_{tp}|$
+        
+        $$\boxed{i_D = k_p' \frac{W}{L}\left[|v_{OV}| - \frac{1}{2} v_{SD}\right] \cdot v_{SD}}$$
+    \end{itemize}
+\end{itemize}
 
-\textbf{Saturation Region} :
 
-$$v_{SD} \geq |v_{OV}| \Leftrightarrow v_{DG} \leq |V_{tp}|$$
 
-$$\boxed{i_D = \frac{1}{2} k_p' \frac{W}{L}v_{OV}^2 }\cdot (1 + |\lambda_p|\cdot v_{SD})$$
+\subsection{Effet d'Early}
 
-\textbf{Triode Region} :
+L'effet d'Early est souvent négligable en DC, une fois $v_{DS}$ ou $v_{SD}$ calculé sans Early, on peut estimer l'erreur pour voir si elle est bien négligable.
 
-$$v_{SD} < |v_{OV}| \Leftrightarrow v_{DG} > |V_{tp}|$$
+En AC, l'effet d'Early n'est pas négligable.
 
-$$\boxed{i_D = k_p' \frac{W}{L}\left[|v_{OV} - \frac{1}{2} v_{SD}\right] \cdot v_{SD}}$$
+\medskip
+
+Tension d'Early : $V_A = 1/\lambda$
+
+\begin{center} \includegraphics[scale=0.3]{images/early.png} \end{center}
+
 
 
 \subsection{Amplificateurs}
@@ -375,13 +362,15 @@ On peut passer en petit-signal à une représentation avec une matrice de quadri
 
 \begin{center} \includegraphics[scale=0.45]{images/mos-quadri.png} \end{center}
 
+<ajouter schéma équivalent PMOS>
+
 \textbf{Effet Early} :
 
 Il faut rajouter l'effet Early, car il n'est pas négligable en AC
 
 \begin{align*}
-g_m &\equiv \frac{\partial i_D}{\partial v_{GS}}\Bigg|_{V_{GS}, V_{DS}} \\
-g_d &\equiv \frac{\partial i_D}{\partial v_{DS}}\Bigg|_{V_{GS}, V_{DS}}
+g_m &\equiv \frac{\partial i_D}{\partial v_{GS}}\Bigg|_{V_{GS}, V_{DS}} = \frac{2I_{DS}}{V_{OV}} \\
+g_d &\equiv \frac{\partial i_D}{\partial v_{DS}}\Bigg|_{V_{GS}, V_{DS}} = \lambda I_{DS}
 \end{align*}
 
 $$r_O = g_d^{-1} = \left(\frac{1}{2} k_n (V_{GS} - V_t)^2 \cdot \lambda\right)^{-1} = \frac{1}{\lambda \cdot I_D} = \frac{V_A}{I_D}$$
