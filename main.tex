@@ -466,7 +466,25 @@ $$
 
 \begin{center} \includegraphics[scale=0.4]{images/bi-equiv-actif.png} \end{center}
 
-<... slide 5 et 6.1>
+Si $r_0$ est négligée :
+
+$$\beta = \beta_F \qquad ; \qquad i_C = I_S\cdot e^{v_{BE}/V_T} \qquad ; \qquad i_B = \frac{i_C}{\beta} \qquad ; \qquad i_E = i_C + i_B = \frac{1}{\alpha} i_C$$
+
+$$\alpha = \frac{\beta}{\beta+1} \qquad ; \qquad \beta = \frac{\alpha}{1 - \alpha}$$
+
+$$i_C = \alpha \cdot i_E = \beta \cdot i_B$$
+
+$\beta$ n'est pas constant :
+\begin{center} \includegraphics[scale=0.4]{images/beta-bi.png} \end{center}
+
+\subsubsection{Autres régions de fonctionnement}
+
+\textbf{NPN} :
+\begin{center} \includegraphics[scale=0.4]{images/region-npn.png} \end{center}
+
+\textbf{PNP} :
+\begin{center} \includegraphics[scale=0.4]{images/region-pnp.png} \end{center}
+
 
 \subsection{Amplificateur BJT en 'grand-signal'}
 
@@ -504,7 +522,17 @@ On peut donc trouver $r_\pi = (\beta + 1)\cdot r_e$
 \begin{center} \includegraphics[scale=0.45]{images/bi-circuit-petit-signal.png} \end{center}
 $$i_b = \frac{i_c}{\beta} \qquad i_e = i_b + i_c$$
 
-$$A_v \equiv \frac{v_{ce}}{v_{be}} = $$
-<slide 12>
+$$A_v \equiv \frac{v_{ce}}{v_{be}} = -g_m\cdot R_C = -\frac{I_C R_C}{V_T}$$
+
+\textbf{Avec résistance de sortie finie} :
+
+\begin{center} \includegraphics[scale=0.35]{images/bi-petit-signal-r0.png} \end{center}
+
+$$i_C = I_S \cdot e^{v_{BE}/V_T} \left(1 + \frac{v_{CE}}{V_A}\right)$$
+
+$$r_o = \left[\left.\frac{\partial i_C}{\partial v_{CE}}\right|_{v_{BE}=\text{cst}}\right]^{-1}$$
+
+$$r_o = \frac{V_A}{I_C'} \approx \frac{V_A}{I_C}$$
+
 
 \end{document}
