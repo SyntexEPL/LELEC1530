@@ -181,8 +181,6 @@ PMOS : Flèche vers la capacité
 
 NMOS : Flèche vers l'extérieur
 
-\textbf{<Borne du transistor> commun(e)} : La <borne du transistor> est connectée à une référence commune (entre l'entrée et la sortie), par exemple la masse
-
 \begin{comment}
 \subsection{Régulateur LDO (Linear Drop Out)}
 
@@ -287,6 +285,14 @@ Tension d'Early : $V_A = 1/\lambda$
 
 \subsection{Amplificateurs}
 
+\textbf{<Borne du transistor> commun(e)} : La <borne du transistor> est connectée à une référence commune (entre l'entrée et la sortie), par exemple la masse
+
+\begin{itemize}
+    \item \textbf{Source commune} : Gain négatif
+    \item \textbf{Drain commun} : Gain unitaire (mais gain en courant)
+    \item \textbf{Grille commune} : Gain positif
+\end{itemize}
+
 \subsubsection{En 'grand signal'}
 
 \begin{center} \includegraphics[scale=0.45]{images/ampli1.png} \end{center}
@@ -345,10 +351,8 @@ $$g_m \equiv \frac{i_d}{v_{gs}} = k_n (V_{GS} - V_t) = k_n V_{OV}$$
 
 $g_m$ : Transconductance petit-signal
 
-$$g_m \equiv \left.\frac{\partial i_D}{\partial v_{GS}}\right|_{v_{GS} = V_{GS}}$$
+$$\boxed{g_m \equiv \left.\frac{\partial i_D}{\partial v_{GS}}\right|_{v_{GS} = V_{GS}} = \frac{2I_{D}}{V_{OV}}}$$
 
-On peut aussi trouver que
-$$g_m = \frac{2\cdot I_D}{V_{OV}}$$
 
 \medskip
 
@@ -358,20 +362,20 @@ $$v_{ds} = -i_d\cdot R_D = -g_m \cdot v_{gs} \cdot R_D$$
 
 $$A_v \equiv \frac{v_{ds}}{v_{gs}} = -g_m \cdot R_D$$
 
-On peut passer en petit-signal à une représentation avec une matrice de quadripôle de transconductance
+On peut passer en petit-signal à une représentation avec une matrice de quadripôle de transconductance, pour un NMOS :
 
 \begin{center} \includegraphics[scale=0.45]{images/mos-quadri.png} \end{center}
 
-<ajouter schéma équivalent PMOS>
+Pour un PMOS, S est au dessus (donc G représenté en dessous) et D en dessous
+
+\medskip
 
 \textbf{Effet Early} :
 
 Il faut rajouter l'effet Early, car il n'est pas négligable en AC
 
-\begin{align*}
-g_m &\equiv \frac{\partial i_D}{\partial v_{GS}}\Bigg|_{V_{GS}, V_{DS}} = \frac{2I_{DS}}{V_{OV}} \\
-g_d &\equiv \frac{\partial i_D}{\partial v_{DS}}\Bigg|_{V_{GS}, V_{DS}} = \lambda I_{DS}
-\end{align*}
+$$\boxed{g_d \equiv \frac{\partial i_D}{\partial v_{DS}}\Bigg|_{V_{GS}, V_{DS}} = \lambda I_{DS}}$$
+
 
 $$r_O = g_d^{-1} = \left(\frac{1}{2} k_n (V_{GS} - V_t)^2 \cdot \lambda\right)^{-1} = \frac{1}{\lambda \cdot I_D} = \frac{V_A}{I_D}$$
 
@@ -379,6 +383,128 @@ $$r_O = g_d^{-1} = \left(\frac{1}{2} k_n (V_{GS} - V_t)^2 \cdot \lambda\right)^{
 
 $$A_v \equiv \frac{v_{ds}}{v_{gs}} = -g_m \cdot (R_D || r_0)$$
 
+\subsubsection{Caractérisation des amplificateurs (ac)}
 
+\begin{center} \includegraphics[scale=0.4]{images/ampli-thevenin.png} \end{center}
+
+$$R_in = \frac{v_i}{i_i}\quad ; \quad A_{vo} \equiv \frac{v_o}{v_i}\Bigg|_{R_L=\infty}\quad ; \quad R_o \equiv \frac{v_x}{i_x}\Bigg|_{v_i=0}$$
+($v_x$ est une petite tension qu'on met à la sortie avec $v_i = 0$)
+$$A_v \equiv \frac{v_o}{v_i} = A_{vo} \frac{R_L}{R_L + R_o}$$
+$$G_v \equiv \frac{v_o}{v_{sig}} \Leftrightarrow G_v = \frac{R_{in}}{R_{in} + R_{sig}}\cdot A_{vo} \cdot \frac{R_L}{R_L + R_o}$$
+
+<... (Modèle en T)>
+
+\subsection{Effets supplémentaires}
+
+\begin{itemize}
+    \item Effet du substrat : Si $B$ a une tension plus faible que la source, la tension de seuil va varier (si $v_{bs}$ est positif, ca augmente le courant du modèle petit signal)
+    $$V_t = V_{t0} + \gamma \left[\sqrt{2\phi_f + V_{SB}} - \sqrt{2\phi_f}\right]$$
+    $$g_{mb} = \frac{\partial i_D}{\partial v_{BS}}\Bigg|_{v_{GS},v_{DS}=cst} = \chi\cdot g_m$$
+    \item Il y a plein de capacités parasites, on peut trouver un modèle petit-signal :
+    \begin{center} \includegraphics[scale=0.4]{images/capa-mos.png} \end{center}
+    On peut trouver la limite haute fréquence intrinsèque :
+    $$\omega_T = \frac{g_m}{C_{gs} + C_{gd}} = 2\pi f_T$$
+    \item Effet de la température : La température change un peu la courbe $i_D$ en fct de $v_{GS}$
+    \item Transistor MOS en dépletion : Cas particulier $V_{tn} < 0$ (NMOS)
+    \begin{center} \includegraphics[scale=0.4]{images/depletion.png} \end{center}
+\end{itemize}
+
+
+
+
+\section{Bipolaire}
+
+\begin{center} \includegraphics[scale=0.4]{images/bipolaire-symbol.png} \end{center}
+C : Collecteur $\qquad$ E : Emetter $\qquad$ B : Base
+
+\subsection{Modèle Ebers-Moll}
+
+Modèle grand-signal :
+\begin{center} \includegraphics[scale=0.4]{images/model-ebers-moll.png} \end{center}
+
+$$
+i_{BE} = \frac{I_S}{\beta_F}\left(e^{v_{BE}/n_F V_T} - 1\right)
+$$
+$$
+i_{BC} = \frac{I_S}{\beta_R}\left(e^{v_{BC}/n_R V_T} - 1\right)
+$$
+$$
+i_{CE} = I_S\left(e^{v_{BE}/n_F V_T} - e^{v_{BC}/n_R V_T}\right) \cdot \underbrace{\left(1 - \frac{v_{BC}}{V_A}\right)}_\text{Effet d'Early}
+$$
+($n_F, n_R \approx 1$ et $V_A$ sont des facteurs de non-idéalités)
+
+\bigskip
+
+En régime actif :
+$$v_{BE} > 0 \qquad v_{BC} < 0$$
+
+\begin{itemize}
+    \item $i_C$ en fct de $v_{BE}$ :
+    \begin{center} \includegraphics[scale=0.35]{images/bi-ic.png} \end{center}
+    \item $i_C$ en fct de $v_{CE}$ :
+    $$\boxed{i_C = I_S\cdot e^{v_{BE}/V_T}\cdot \left(1 + \frac{v_{CE}}{V_A}\right)}$$
+    $$r_o = \frac{V_A}{I_C'} \qquad \text{avec} \quad I_C' = I_S \cdot e^{V_{BE}/V_T}$$
+    \begin{center} \includegraphics[scale=0.35]{images/bi-ic-vce.png} \end{center}
+\end{itemize}
+
+En régime actif on a :
+$$
+I_C' = I_S \cdot e^{V_{BE}/V_T}
+$$
+$$
+I_B = \frac{I_S}{\beta_F} \cdot e^{V_{BE}/V_T}
+$$
+$$
+\boxed{\frac{I_C}{I_B} = \beta_F}
+$$
+Plus précisément :
+$$
+\beta_F = \frac{\Delta I_C}{\Delta I_B}
+$$
+
+\subsubsection{Circuits équivalents en régime actif ($v_{ce} \geq 0.3\: \unit{\volt}$)}
+
+\begin{center} \includegraphics[scale=0.4]{images/bi-equiv-actif.png} \end{center}
+
+<... slide 5 et 6.1>
+
+\subsection{Amplificateur BJT en 'grand-signal'}
+
+\begin{center} \includegraphics[scale=0.4]{images/bjt-ampli.png} \end{center}
+$$v_{CE} = V_{CC} - R_C \cdot i_C$$
+$$v_{CE} = V_{CC} - R_C \cdot I_S e^{v_{BE}/V_T}$$
+
+$$
+\boxed{A_v \equiv \left. \frac{dv_{CE}}{dv_{BE}} \right|_{v_{BE}=V_{BE}} = -\frac{I_C R_C}{V_T}}
+$$
+$$
+|A_{vmax}| \approx \frac{V_{CC}}{V_T}
+$$
+
+\subsection{Modèle 'petit-signal'}
+
+Point de polarisation DC :
+$$I_C = I_S \cdot e^{V_{BE}/V_T}$$
+$$V_{CE} = V_{CC} - R_C\cdot I_C > 0,7 \: \unit{\volt} \qquad \text{(actif)}$$
+
+On peut obtenir
+$$I_C = \underbrace{I_C}_\text{DC} + \underbrace{\frac{I_C}{V_T}\cdot v_{be}}_\text{ac}$$
+
+$$\boxed{g_m \equiv \frac{\partial i_C}{\partial v_{BE}}\Bigg|_{i_C\equiv I_C} = \frac{I_C}{V_T}}$$
+
+Résistance (d'entrée) de base et d'émetteur :
+
+$$r_\pi \equiv \frac{v_{be}}{i_b} = \frac{\beta}{g_m} = \frac{V_T}{I_B}$$
+$$r_e \equiv \frac{v_{be}}{i_e} = \frac{V_T}{I_E} = \frac{\alpha}{g_m} \approx \frac{1}{g_m}$$
+
+On peut donc trouver $r_\pi = (\beta + 1)\cdot r_e$
+
+\subsubsection{Circuits équivalents 'petit-signal'}
+
+\begin{center} \includegraphics[scale=0.45]{images/bi-circuit-petit-signal.png} \end{center}
+$$i_b = \frac{i_c}{\beta} \qquad i_e = i_b + i_c$$
+
+$$A_v \equiv \frac{v_{ce}}{v_{be}} = $$
+<slide 12>
 
 \end{document}
