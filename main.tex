@@ -534,5 +534,79 @@ $$r_o = \left[\left.\frac{\partial i_C}{\partial v_{CE}}\right|_{v_{BE}=\text{cs
 
 $$r_o = \frac{V_A}{I_C'} \approx \frac{V_A}{I_C}$$
 
+$$v_o = -g_m \cdot v_{be}\cdot (R_C || r_o)$$
+
+
+<Modèle T (sur slide 25 qui n'existe pas)>
+
+\subsection{Amplificateurs}
+
+\begin{center} \includegraphics[scale=0.4]{images/bi-common.png} \end{center}
+
+\begin{itemize}
+    \item \textbf{Émetteur commun} : Grand gain négatif
+    \item \textbf{Collecteur commun} (ou émetteur suiveur) : Gain unitaire
+    \item \textbf{Base commune} : Grand gain positif
+\end{itemize}
+
+Amplification en ac avec résistance de générateur et de charge :
+
+$$G_v = \frac{R_{in}}{R_{in} + R_{sig}}\cdot A_{vo} \cdot \frac{R_L}{R_L + R_o}$$
+
+\subsubsection{Amplificateur en émetteur commun (ac)}
+
+\begin{center} \includegraphics[scale=0.4]{images/bi-ampli-globa.png} \end{center}
+\begin{center} \includegraphics[scale=0.4]{images/bi-ampli.png} \end{center}
+
+$$R_{in} = R_\pi \qquad ; \qquad R_o = R_C || r_o \approx R_C \qquad ; \qquad A_{vo} = -g_m(R_C || r_o) \approx -g_m\cdot R_C$$
+
+$$A_v = -g_m \cdot (R_C || R_L || r_o) \qquad ; \qquad G_v = A_v \frac{r_\pi}{R_{sig} + r_\pi}$$
+
+Avec une résistance d'émetteur, on utilise le modèle petit-signal en T, et on obtient :
+$$A_{vo} = -\frac{g_m R_C}{1 + g_m R_e}$$
+("negative feedback", amélioration des performances mais gain plus faible)
+
+\subsubsection{Polarisation des amplificateurs}
+
+Avec des résistances, comme il y a un courant de base, la tension va varier.
+
+Lorsqu'il y a une résistance d'émetteur $R_E$, ca se stabilise même avec un diviseur résistif pour la base, ou même une simple résistance vers la masse
+
+On peut aussi polariser avec un source de courant, ou un miroir de courant.
+
+
+
+\subsubsection{Amplificateurs discrets}
+
+En émetteur commun :
+
+\begin{center} \includegraphics[scale=0.4]{images/ampli-discret.png} \end{center}
+
+On a un système d'équations interdépendantes :
+
+\begin{itemize}
+    \item DC : $\forall$ noeuds : Loi les noeuds, loi des mailles, $V=RI$, équations du transistor
+    \item AC : 
+    $$ G_v = - \frac{R_G}{R_G + R_{\text{sig}}} g_m (R_D \| R_L \| r_o) \cdot \frac{s}{s + \frac{1}{C_{C1}(R_G + R_{\text{sig}})}} $$
+\end{itemize}
+
+
+\subsection{Effets supplémentaires}
+
+\begin{center} \includegraphics[scale=0.4]{images/bi-effets.png} \end{center}
+
+
+\break
+\section{Fréquence}
+
+\subsection{Réponse basse fréquence de l'amplificateur CS}
+
+\begin{center} \includegraphics[scale=0.45]{images/freq-basse.png} \end{center}
+
+On peut trouver les différents pôles :
+$$\omega_{P1} = \frac{1}{C_{C1} \cdot (R_G + R_{sig})} \quad ; \quad \omega_{P2} = \frac{g_m + \frac{1}{R_S}}{C_S} \quad ; \quad \omega_{P3} = \frac{1}{C_{C2} \cdot (R_D + R_L)}$$
+$$\omega_Z = \frac{1}{R_S \cdot C_S}$$
+
+
 
 \end{document}
